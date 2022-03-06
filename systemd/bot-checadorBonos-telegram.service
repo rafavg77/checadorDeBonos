@@ -1,0 +1,15 @@
+[Unit]
+Description=Bot Checador de Bonos
+
+Wants=network.target
+After=network.target
+
+[Service]
+ExecStart=/home/pi/Production/Bots/checadorDeBonos/venv/bin/python3 /home/pi/Production/Bots/checadorDeBonos/src/bot/bot.py
+Restart=on-failure
+RestartSec=10
+SyslogIdentifier=bot-checadorBonos-telegram
+User=pi
+
+[Install]
+WantedBy=multi-user.target
