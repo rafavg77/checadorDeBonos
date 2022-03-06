@@ -1,8 +1,6 @@
 import os
 import time
 import logging
-import datetime
-import requests
 from configparser import ConfigParser
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -74,7 +72,7 @@ class checadorBonos():
             driver.quit()
 
     def consultarSaldoBonos(self, user, password):
-        logger.info("Running Bond Script ...")
+        logger.info("Consultando Bonos ...")
         options = Options()
         options.headless = True
         options.add_argument("--window-size=1920,1200")

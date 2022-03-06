@@ -1,8 +1,11 @@
 import os
 import logging
+from socket import MsgFlag
+from urllib import response
 from telebot import types, telebot
 from configparser import ConfigParser
 from utils.consultarBonos import checadorBonos
+from utils.consultarLuz import checarLuz
 
 # Cargar archivo de configuración
 thisfolder = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +41,6 @@ bot = telebot.TeleBot(BOT_TOKEN)
 def esPermitido(message):
     if str(message.chat.id) in USARUIOS_PERMITIDOS:
         permitido = True
-        logging.info("Usuario permitido {}".format(message.chat.id))
     else:
         permitido = False
         id = str(message.chat.id)
@@ -114,8 +116,24 @@ def consultarBonosUsuario(message,usuario):
 @bot.message_handler(commands=['consultarLuz'])
 def consultarLuz(message):
     if esPermitido(message):
-        status = "Funcionalidad no implementada actualmente"
-        bot.send_message(message.chat.id, status)
+        luz = checarLuz()
+
+        try:
+            response = luz.consultarSaldoLuz()
+            photo = open(response['screen'], 'rb')
+            msg = """
+            Monto : {} \n
+            Periodo : {} \n
+            Fecha Limite : {} \n
+            Estado del Recibo : {}
+            """.format(response['monto'],response['periodo'],response['fecha_limitie'],response['estado_recibo'])
+        except:
+            msg = "No se pudo obtener el recibo de luz"
+            pass
+
+        bot.send_message(message.chat.id, msg)
+        if photo:
+            bot.send_photo(message.chat.id, photo)
 
 # Funcion para consultar saldo de Agua
 @bot.message_handler(commands=['consultarAgua'])
