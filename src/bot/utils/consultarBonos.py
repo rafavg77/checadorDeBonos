@@ -28,7 +28,7 @@ class checadorBonos():
 
     def __init__(self):
         #Configuracion inicial
-        logging.info("Sin configuración Inicial ...")
+        logger.info("Sin configuración Inicial ...")
 
 
     def login(self, driver,user, password):
@@ -38,26 +38,26 @@ class checadorBonos():
             TAG_USERNAME.send_keys(user)
             TAG_PASSWORD = driver.find_element(by=By.XPATH, value='//*[@id="Password"]')
             TAG_PASSWORD.send_keys(password)
-            logging.info("Filling login form")
+            logger.info("Filling login form")
             nextButton = driver.find_element(by=By.XPATH, value='//*[@id="btnLogIn"]')
             nextButton.click()
-            logging.info("Submiting form")
+            logger.info("Submiting form")
         except ValueError as err:
-            logging.error("Error in login")
+            logger.error("Error in login")
             driver.quit()
 
     def getBalanceInfo(self, driver):
         try:
             check = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'card-balance')))
-            logging.info("Getting debt Info")
+            logger.info("Getting debt Info")
             balance = driver.find_element(by=By.CLASS_NAME, value='card-balance')
             while balance.text == "$--.--":
                 balance = driver.find_element(by=By.CLASS_NAME, value='card-balance')
-                logging.info("Esperando tiempo de carga" + balance.text)
-            logging.info("Saldo de Bonos:" + balance.text)
+                logger.info("Esperando tiempo de carga" + balance.text)
+            logger.info("Saldo de Bonos:" + balance.text)
 
         except ValueError as err:
-            logging.error("Error in getReceiptInfo")
+            logger.error("Error in getReceiptInfo")
             driver.quit()
 
         return balance.text
@@ -68,13 +68,13 @@ class checadorBonos():
             time.sleep(5)
             close = driver.find_element(by=By.XPATH, value='//*[@id="div-sidebar-wrapper"]/ul/li[4]/ul/li[13]/a')
             close.click()
-            logging.info("Log Out!")
+            logger.info("Log Out!")
         except ValueError as err:
-            logging.error("Error in logout")
+            logger.error("Error in logout")
             driver.quit()
 
     def consultarSaldoBonos(self, user, password):
-        logging.info("Running Bond Script ...")
+        logger.info("Running Bond Script ...")
         options = Options()
         options.headless = True
         options.add_argument("--window-size=1920,1200")
@@ -84,12 +84,12 @@ class checadorBonos():
         driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
 
         driver.get(BASE_URL)
-        logging.info("Opening " + BASE_URL)
+        logger.info("Opening " + BASE_URL)
 
         self.login(driver,user, password)
         saldo = self.getBalanceInfo(driver)
         self.logout(driver)
 
-        logging.info("Done!")
+        logger.info("Done!")
         driver.quit()
         return saldo
