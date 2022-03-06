@@ -43,9 +43,9 @@ def esPermitido(message):
         permitido = False
         id = str(message.chat.id)
         if message.chat.type == 'group':
-            user = message.chat.title
+            user = str(message.chat.title)
         else:
-            user = message.chat.username
+            user = str(message.chat.username)
         logger.warning("Warning user without permission: " + id + " "+ user)
         bot.send_message(message.chat.id, "No tienes privilegios suficientes")
         bot.send_message(BOT_CHAT, "REPORTE usuario no permitido id: " + id + " nombre: "+ user)

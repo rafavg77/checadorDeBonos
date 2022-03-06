@@ -93,4 +93,3 @@ class checadorBonos():
         logging.info("Done!")
         driver.quit()
         return saldo
-
