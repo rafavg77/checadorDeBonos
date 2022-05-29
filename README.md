@@ -5,7 +5,7 @@ Telegram bot para revisar el saldo de los bonos
 ```bash
 $ git clone git@github.com:rafavg77/checadorDeBonos.git
 $ #Instalar chromiun
-$ sudo apt-get install chromium-chromedriver
+$ sudo apt-get install chromium-chromedriver python3-pip python3-virtualenv python3-venv
 $ #acceder a carpeta de proyecto
 $ cd checadorDeBonos
 $ #Crear ambiente virtual
